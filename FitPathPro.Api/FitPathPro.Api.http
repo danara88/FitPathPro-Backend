@@ -1,0 +1,6 @@
+@FitPathPro.Api_HostAddress = http://localhost:5206
+
+GET {{FitPathPro.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
