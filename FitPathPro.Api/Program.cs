@@ -1,11 +1,13 @@
 using FitPathPro.Api;
 using FitPathPro.Application;
+using FitPathPro.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddPresentation(builder.Configuration)
-    .AddApplication();
+    .AddApplication()
+    .AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 

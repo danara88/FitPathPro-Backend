@@ -1,16 +1,24 @@
+using FitPathPro.Domain.Common.BaseEntity;
+
 namespace FitPathPro.Domain.Exercises;
 
-public class Exercise 
+/// <summary>
+/// Domain entity representing an Exercise
+/// </summary>
+public class Exercise : BaseEntity
 {
-    public int Id { get; set; }
+    /// <summary>
+    /// Represents the exercise name
+    /// </summary>
+    public string Name { get; set; } = string.Empty;
 
-    public string? Name { get; set; }
+    /// <summary>
+    /// Represents the muscle that the exercise impact
+    /// </summary>
+    public string Muscle { get; set; } = string.Empty;
 
-    public string? Muscle { get; set; }
-
+    /// <summary>
+    /// Represents the video of the exercise
+    /// </summary>
     public string? VideoUrl { get; set; }
-
-    public DateTime CreatedOn { get; set; }
-
-    public DateTime UpdatedOn { get; set; }
 }
