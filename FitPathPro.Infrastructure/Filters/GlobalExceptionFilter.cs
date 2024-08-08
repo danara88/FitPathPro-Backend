@@ -45,7 +45,7 @@ namespace EduPrime.Infrastructure.Filters
     /// </summary>
     public class ApiFailure
     {
-        public string? Message { get; set; }
+        public string Message { get; set; } = string.Empty;
 
         public int Status { get; set; }
 

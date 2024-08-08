@@ -1,6 +1,6 @@
 using AutoMapper;
+using FitPathPro.Application.Users.DTOs;
 using FitPathPro.Domain.Users;
-using FitPathPro.Domain.Users.DTOs;
 
 namespace FitPathPro.Application.Common.Mapper;
 
@@ -10,6 +10,7 @@ public class AutoMapperProfile : Profile
     {
         #region User
         CreateMap<RegisterUserDTO, User>();
+        CreateMap<User, UserDTO>();
         #endregion
     }
 }
