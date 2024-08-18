@@ -18,4 +18,14 @@ public static class AuthenticationErrors
     public static readonly Error UserAlreadyRegistered = Error.Conflict(
         code: "Authentication.UserAlreadyRegistered",
         description: "This account already exists. Enter a different account or request a new one.");
+
+    public static readonly Error UserAccountNotVerified = Error.Validation(
+        code: "Authentication.UserAccountNotVerified",
+        description: "Your account is not verified yet. Please check your email inbox for the verification link and confirm your account."
+    );
+
+    public static readonly Error InvalidVerificationToken = Error.Validation(
+        code: "Authentication.InvalidVerificationToken",
+        description: "An error occurred while verifying your account."
+    );
 }

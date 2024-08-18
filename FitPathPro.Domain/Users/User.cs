@@ -38,6 +38,11 @@ public class User : BaseEntity
     public string? VerificationToken { get; set; }
 
     /// <summary>
+    /// Date and time when the verification token expires
+    /// </summary>
+    public DateTime? VerificationTokenExpires { get; set; }
+
+    /// <summary>
     /// Date and time when the user verified their account via email
     /// </summary>
     public DateTime? VerifiedAt { get; set; }

@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using AutoMapper;
 using EduPrime.Core.Exceptions;
 using ErrorOr;
@@ -46,6 +47,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
             LastName = request.input.LastName,
             Email = request.input.Email,
             PasswordHash = hashPasswordResult.Value,
+            VerificationToken = CreateRandomeToken(),
+            VerificationTokenExpires = DateTime.UtcNow.AddDays(2),
             LastLogin = DateTime.UtcNow
         };
 
@@ -68,5 +71,10 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
         {
             AccessToken = accessToken,
         };
+    }
+
+    private string CreateRandomeToken()
+    {
+        return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
     }
 }

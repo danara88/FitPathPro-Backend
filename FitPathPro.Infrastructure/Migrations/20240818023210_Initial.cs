@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FitPathPro.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Create_User_Exercise_Table : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,7 @@ namespace FitPathPro.Infrastructure.Migrations
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Muscle = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     VideoUrl = table.Column<string>(type: "text", unicode: false, nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 8, 8, 17, 38, 52, 431, DateTimeKind.Utc).AddTicks(700)),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 8, 18, 2, 32, 10, 577, DateTimeKind.Utc).AddTicks(3570)),
                     UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
@@ -41,10 +41,11 @@ namespace FitPathPro.Infrastructure.Migrations
                     PasswordHash = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: false),
                     LastLogin = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     VerificationToken = table.Column<string>(type: "text", unicode: false, nullable: true),
+                    VerificationTokenExpires = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     VerifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     PasswordResetToken = table.Column<string>(type: "text", unicode: false, nullable: true),
                     PasswordResetTokenExpires = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 8, 8, 17, 38, 52, 431, DateTimeKind.Utc).AddTicks(2260)),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValue: new DateTime(2024, 8, 18, 2, 32, 10, 577, DateTimeKind.Utc).AddTicks(5080)),
                     UpdatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
