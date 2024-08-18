@@ -9,13 +9,13 @@ public static class AuthenticationErrors
 {
     public static readonly Error InvalidCredentials = Error.Unauthorized(
         code: "Authentication.InvalidCredentials",
-        description: "Invalid credentials");
+        description: "Your email account or password is incorrect.");
 
     public static readonly Error WeakPassword = Error.Validation(
         code: "Authentication.WeakPassword",
-        description: "Password too weak");
+        description: "Password too weak. Password must be 8+ characters, with uppercase, lowercase, a number, and a special character.");
 
     public static readonly Error UserAlreadyRegistered = Error.Conflict(
         code: "Authentication.UserAlreadyRegistered",
-        description: "User already registered");
+        description: "This account already exists. Enter a different account or request a new one.");
 }

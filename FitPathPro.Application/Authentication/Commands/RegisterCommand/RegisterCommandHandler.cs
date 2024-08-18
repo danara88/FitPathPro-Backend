@@ -58,7 +58,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
         catch(Exception)
         {
             // TODO: Integrate Logger here to catch the error and store it
-            throw new InternalServerException("User registration failed. Please try again.");
+            throw new InternalServerException("User registration failed due to a server error. Please try again later.");
         }
 
         var userDTO = _mapper.Map<UserDTO>(user);
