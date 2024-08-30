@@ -2,6 +2,8 @@ using FitPathPro.Application.Common.Interfaces;
 using FitPathPro.Infrastructure.Authentication.PasswordHasher;
 using FitPathPro.Infrastructure.Authentication.TokenGenerator;
 using FitPathPro.Infrastructure.Common.Persistence;
+using FitPathPro.Infrastructure.Mail;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +18,9 @@ public static class DependencyInjection
     {
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));
+        services.AddScoped<IEmailSender, EmailService>();
 
         // JWT configuration set up
         services.AddTransient<IJwtFactory, JwtFactory>();

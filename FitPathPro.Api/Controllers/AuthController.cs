@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FitPathPro.Controllers;
 
-public class AuthenticationController : ApiController
+public class AuthController : ApiController
 {
     private readonly ISender _mediator;
 
-    public AuthenticationController(ISender mediator)
+    public AuthController(ISender mediator)
     {
         _mediator = mediator;
     }
@@ -29,8 +29,8 @@ public class AuthenticationController : ApiController
         var command = new RegisterCommand(input);
         var result = await _mediator.Send(command);
 
-        Func<AuthenticationReponse, IActionResult> response = (authResponse) =>
-            Ok(new ApiResponse<AuthenticationReponse>(authResponse));
+        Func<string, IActionResult> response = (message) =>
+            Ok(new ApiMessageResponse(message));
 
         return result.Match(
             response,
@@ -56,7 +56,7 @@ public class AuthenticationController : ApiController
         );
     }
 
-    [HttpGet("~/api/v1/auth/verify-account")]
+    [HttpPost("~/api/v1/auth/verify-account")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -65,9 +65,8 @@ public class AuthenticationController : ApiController
         var command = new VerifyAccountCommand(token);
         var result = await _mediator.Send(command);
 
-        // TODO: Move this URL to consts file
-        Func<Success, IActionResult> response = (result) =>
-            Redirect("http://localhost:4200/auth/register");
+       Func<string, IActionResult> response = (message) =>
+            Ok(new ApiMessageResponse(message));
 
         return result.Match(
             response,

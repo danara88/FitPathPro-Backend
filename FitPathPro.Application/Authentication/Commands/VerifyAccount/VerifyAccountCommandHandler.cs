@@ -9,7 +9,7 @@ namespace FitPathPro.Application.Authentication.Commands.VerifyAccount;
 /// <summary>
 /// Represents the verification account cammand handler
 /// </summary>
-public class VerifyAccountCommandHandler : IRequestHandler<VerifyAccountCommand, ErrorOr<Success>>
+public class VerifyAccountCommandHandler : IRequestHandler<VerifyAccountCommand, ErrorOr<string>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -18,7 +18,7 @@ public class VerifyAccountCommandHandler : IRequestHandler<VerifyAccountCommand,
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<ErrorOr<Success>> Handle(VerifyAccountCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<string>> Handle(VerifyAccountCommand request, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.UserRepository.GetByVerificationTokenAsync(request.input);
 
@@ -38,6 +38,6 @@ public class VerifyAccountCommandHandler : IRequestHandler<VerifyAccountCommand,
             throw new InternalServerException("Account verification failed due to a server error. Please try again later.");
         }
 
-        return Result.Success;
+        return "Email address confirmed.";
     }
 }
