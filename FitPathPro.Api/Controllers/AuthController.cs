@@ -1,7 +1,7 @@
 using EduPrime.Api.Controllers;
-using ErrorOr;
 using FitPathPro.Api.Response;
 using FitPathPro.Application.Authentication.Commands.RegisterCommand;
+using FitPathPro.Application.Authentication.Commands.SendVerificationEmailCommand;
 using FitPathPro.Application.Authentication.Commands.VerifyAccount;
 using FitPathPro.Application.Authentication.Common;
 using FitPathPro.Application.Authentication.Queries;
@@ -49,6 +49,24 @@ public class AuthController : ApiController
 
         Func<AuthenticationReponse, IActionResult> response = (authResponse) =>
             Ok(new ApiResponse<AuthenticationReponse>(authResponse));
+
+        return result.Match(
+            response,
+            Problem
+        );
+    }
+
+    [HttpPost("~/api/v1/auth/send-verification-email")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> SendVerificationEmail([FromBody] SendVerificationEmailDTO input)
+    {
+        var command = new SendVerificationEmailCommand(input);
+        var result = await _mediator.Send(command);
+
+        Func<string, IActionResult> response = (message) =>
+            Ok(new ApiMessageResponse(message));
 
         return result.Match(
             response,
