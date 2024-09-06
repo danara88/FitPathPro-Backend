@@ -1,76 +1,49 @@
-using System.Security.Cryptography;
 using System.Text.Encodings.Web;
 using EduPrime.Core.Exceptions;
 using ErrorOr;
-using FitPathPro.Application.Authentication.Common;
 using FitPathPro.Application.Common.Interfaces;
 using FitPathPro.Domain.Users;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
-namespace FitPathPro.Application.Authentication.Commands.RegisterCommand;
+namespace FitPathPro.Application.Authentication.Commands.SendVerificationEmailCommand;
 
-/// <summary>
-/// Represents the register command handler
-/// </summary>
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<string>>
+public class SendVerificationEmailCommandHandler : IRequestHandler<SendVerificationEmailCommand, ErrorOr<string>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IPasswordHasher _passwordHasher;
-    private readonly IWebHostEnvironment _hostEnvironment;
     private readonly IEmailSender _emailSender;
+    private readonly IWebHostEnvironment _hostEnvironment;
 
-    public RegisterCommandHandler(
-        IUnitOfWork unitOfWork,
-        IPasswordHasher passwordHasher,
-        IWebHostEnvironment hostEnvironment,
-        IEmailSender emailSender)
+    public SendVerificationEmailCommandHandler(
+        IUnitOfWork unitOfWork, 
+        IEmailSender emailSender, 
+        IWebHostEnvironment hostEnvironment)
     {
         _unitOfWork = unitOfWork;
-        _passwordHasher = passwordHasher;
-        _hostEnvironment = hostEnvironment;
         _emailSender = emailSender;
+        _hostEnvironment = hostEnvironment;
     }
 
-    public async Task<ErrorOr<string>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<string>> Handle(SendVerificationEmailCommand request, CancellationToken cancellationToken)
     {
-        if (await _unitOfWork.UserRepository.ExistsByEmailAsync(request.input.Email))
+        var user = await _unitOfWork.UserRepository.GetByEmailAsync(request.input.Email);
+
+        if(user is null || user.VerifiedAt is not null)
         {
-            return AuthenticationErrors.UserAlreadyRegistered;
+            return Error.Validation(description: "Ups! Something went wrong while sending verification email.");
         }
 
-        var hashPasswordResult = _passwordHasher.HashPassword(request.input.Password);
-        if(hashPasswordResult.IsError)
-        {
-            return hashPasswordResult.Errors;
-        }
-
-        var user = new User
-        {
-            FirstName = request.input.FirstName,
-            LastName = request.input.LastName,
-            Email = request.input.Email,
-            PasswordHash = hashPasswordResult.Value,
-            VerificationToken = CreateRandomeToken(),
-            VerificationTokenExpires = DateTime.UtcNow.AddDays(2),
-            LastLogin = DateTime.UtcNow
-        };
-
-        await _unitOfWork.UserRepository.AddAsync(user);
-        
         try
         {
-            await _unitOfWork.SaveChangesAsync();
             await SendVerificationEmail(user);
         }
         catch(Exception)
         {
-            // TODO: Integrate Logger here to catch the error and store it
             throw new InternalServerException("Oops! Something went wrong.");
         }
 
-        return $"Success! A verification email has been sent to {user.Email}. Please check your inbox and follow the instructions to complete your registration.";
+        return "Verification email sent";
     }
 
     private async Task SendVerificationEmail(User user)
@@ -104,12 +77,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<s
         }
         catch (Exception)
         {
-            throw new InternalServerException();
+            throw new Exception();
         }
     }
 
-    private string CreateRandomeToken()
-    {
-        return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
-    }
 }
+

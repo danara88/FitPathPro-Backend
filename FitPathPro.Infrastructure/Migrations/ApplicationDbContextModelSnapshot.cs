@@ -33,7 +33,7 @@ namespace FitPathPro.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2024, 8, 8, 17, 38, 52, 431, DateTimeKind.Utc).AddTicks(700));
+                        .HasDefaultValue(new DateTime(2024, 8, 18, 2, 32, 10, 577, DateTimeKind.Utc).AddTicks(3570));
 
                     b.Property<string>("Muscle")
                         .IsRequired()
@@ -68,7 +68,7 @@ namespace FitPathPro.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
-                        .HasDefaultValue(new DateTime(2024, 8, 8, 17, 38, 52, 431, DateTimeKind.Utc).AddTicks(2260));
+                        .HasDefaultValue(new DateTime(2024, 8, 18, 2, 32, 10, 577, DateTimeKind.Utc).AddTicks(5080));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -108,6 +108,9 @@ namespace FitPathPro.Infrastructure.Migrations
                     b.Property<string>("VerificationToken")
                         .IsUnicode(false)
                         .HasColumnType("text");
+
+                    b.Property<DateTime?>("VerificationTokenExpires")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("VerifiedAt")
                         .HasColumnType("timestamp with time zone");

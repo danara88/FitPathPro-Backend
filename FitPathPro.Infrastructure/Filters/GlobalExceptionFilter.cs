@@ -27,7 +27,7 @@ namespace EduPrime.Infrastructure.Filters
 
                 var error = new ApiFailure
                 {
-                    Message = exception.Message,
+                    Detail = exception.Message,
                     Status = (int)HttpStatusCode.InternalServerError,
                     Success = false
                 };
@@ -39,13 +39,13 @@ namespace EduPrime.Infrastructure.Filters
         }
     }
 
-     /// <summary>
+    /// <summary>
     /// Represents the response when an API fails
     /// TODO: Move this to correct file.
     /// </summary>
     public class ApiFailure
     {
-        public string Message { get; set; } = string.Empty;
+        public string Detail { get; set; } = string.Empty;
 
         public int Status { get; set; }
 

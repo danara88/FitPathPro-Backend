@@ -35,6 +35,11 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
             return AuthenticationErrors.InvalidCredentials;
         }
 
+        if(user.VerifiedAt is null)
+        {
+            return AuthenticationErrors.UserAccountNotVerified;
+        }
+
         var userDTO = _mapper.Map<UserDTO>(user);
 
         return new AuthenticationReponse
